@@ -19,6 +19,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Compile Include="server.js" />
+    <Content Include="server-pageTemplate.html" />
     <Content Include="ui\index.html" />
     <Content Include="ui\style.css" />
     <Content Include="ui\madi.png" />

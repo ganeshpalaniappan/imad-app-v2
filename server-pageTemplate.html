@@ -1,0 +1,32 @@
+﻿`
+<html>
+<head>
+    <title>${data.title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/ui/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div>
+            <a href="/">Home</a>
+        </div>
+        <hr />
+        <h3>${data.heading}</h3>
+        <div>${data.date}</div>
+        <div>${data.text}</div>
+        <hr />
+        <div>
+            <input type="text" id="comment_txt" class="textboxStyle"/>
+            <input type="button" id="submit_btn" value="Add Comment" />
+        </div>
+        <h3>Previously entered comments</h3>
+        <div>
+            <ul id="comments_lst"></ul>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/ui/main.js"></script>
+
+</body>
+</html>
+`

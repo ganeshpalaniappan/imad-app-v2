@@ -24,3 +24,14 @@ body {
     background-color: gray;
 }
 
+.textboxStyle {
+  padding: 25px;
+  width:70%;
+  border: solid 2px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+.textboxStyle:focus {
+  border: solid 5px #707070;
+  box-shadow: 0 0 10px 1px #969696;
+}

@@ -9,6 +9,13 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
+var comments = [];
+app.get('/submit-comment', function (req, res) {
+    var comment = req.query.comment;
+    comments.push(comment);
+    res.send(JSON.stringify(comments));
+});
+
 app.get('/:pageName', function (req, res) {
     var pageName = req.params.pageName;
     res.send(createPageFromTemplate(pageData[pageName]));
@@ -41,31 +48,20 @@ var pageData = {
 };
 
 function createPageFromTemplate(data) {
-
     if (!data) {
         return 'This page is not available';
     }
 
-    var pageHtmlTemplate = `
-        <html>
-            <head>
-                <title>${data.title}</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link href="/ui/style.css" rel="stylesheet" />
-            </head>
-            <body>
-                <div class="container">
-                    <div>
-                        <a href="/">Home</a>
-                    </div>
-                    <hr/>
-                    <h3>${data.heading}</h3>
-                    <div>${data.date}</div>
-                    <div>${data.text}</div>
-                </div>
-            </body>
-        </html>
-    `;
+    var pageHtmlTemplate = "";
+    var fs = require("fs");
+    var templatePath = path.join(__dirname, "server-pageTemplate.html");
+
+    try {
+        pageHtmlTemplate = fs.readFileSync(templatePath, "utf-8");
+        pageHtmlTemplate = eval(pageHtmlTemplate);
+    } catch (err) {
+        console.log(err);
+    }
 
     return pageHtmlTemplate;
 };
