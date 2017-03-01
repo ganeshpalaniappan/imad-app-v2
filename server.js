@@ -1,12 +1,40 @@
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
+var Pool = require('pg').Pool;
+
+var config = {
+    user: 'postgres',
+    database: 'Article',
+    host: 'localhost',
+    port: '5432',
+    password: 'Pr0metheus$'
+};
 
 var app = express();
 app.use(morgan('combined'));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
+});
+
+var pool = new Pool(config);
+app.get('/articles/:articleName', function (req, res) {
+    var articleName = req.params.articleName;
+    pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
+        if (err) {
+            res.status(500).send(err.toString);
+        }
+        else {
+            if (result.rows.length === 0) {
+                res.status(400).send("Article not found");
+            }
+            else {
+                let articleData = result.rows[0];
+                res.send(createPageFromTemplate(articleData,"Article-Template.html"));
+            }
+        }
+    });
 });
 
 var comments = [];
@@ -18,7 +46,7 @@ app.get('/submit-comment', function (req, res) {
 
 app.get('/:pageName', function (req, res) {
     var pageName = req.params.pageName;
-    res.send(createPageFromTemplate(pageData[pageName]));
+    res.send(createPageFromTemplate(pageData[pageName], "server-pageTemplate.html"));
 });
 
 app.get('/ui/style.css', function (req, res) {
@@ -47,14 +75,14 @@ var pageData = {
     'page2Data': new content("Page 2 Title", "Page 2 Heading", "10-Feb-2017", "Page 2 Content")
 };
 
-function createPageFromTemplate(data) {
+function createPageFromTemplate(data,template) {
     if (!data) {
         return 'This page is not available';
     }
 
     var pageHtmlTemplate = "";
     var fs = require("fs");
-    var templatePath = path.join(__dirname, "server-pageTemplate.html");
+    var templatePath = path.join(__dirname, template);
 
     try {
         pageHtmlTemplate = fs.readFileSync(templatePath, "utf-8");

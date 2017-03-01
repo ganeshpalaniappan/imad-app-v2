@@ -24,6 +24,10 @@ body {
     background-color: gray;
 }
 
+.date {
+    font-style: italic;
+}
+
 .textboxStyle {
   padding: 25px;
   width:70%;
