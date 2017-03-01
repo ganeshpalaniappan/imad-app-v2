@@ -2,13 +2,14 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
+require('dotenv').config();
 
 var config = {
     user: 'postgres',
     database: 'Article',
     host: 'localhost',
     port: '5432',
-    password: 'Pr0metheus$'
+    password: process.env.PG_DB_PWD
 };
 
 var app = express();
