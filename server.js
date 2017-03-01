@@ -5,11 +5,11 @@ var Pool = require('pg').Pool;
 require('dotenv').config();
 
 var config = {
-    user: 'postgres',
-    database: 'Article',
+    user: process.env.DB_UID,
+    database: process.env.DB,
     host: 'localhost',
     port: '5432',
-    password: process.env.PG_DB_PWD
+    password: process.env.DB_PWD
 };
 
 var app = express();
