@@ -2,15 +2,24 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
-var envConfig = require('dotenv').config();
+//var envConfig = require('dotenv').config();
 
-var config = {
+/*var config = {
     user: process.env.DB_UID,
     database: process.env.DB,
     host: 'localhost',
     port: '5432',
     password: process.env.DB_PWD
+};*/
+
+var config = {
+    user: 'ganeshpalaniappan',
+    database: 'ganeshpalaniappan',
+    host: 'localhost',
+    port: '5432',
+    password: 'db-ganeshpalaniappan-46553'
 };
+
 
 var app = express();
 app.use(morgan('combined'));
