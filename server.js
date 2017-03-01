@@ -33,11 +33,11 @@ app.get('/articles/:articleName', function (req, res) {
     var articleName = req.params.articleName;
     pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
         if (err) {
-            res.status(500).send(err.toString);
+            res.send(err.toString);
         }
         else {
             if (result.rows.length === 0) {
-                res.status(400).send("Article not found");
+                res.send("Article not found");
             }
             else {
                 res.send(createPageFromTemplate(result.rows[0],"Article-Template.html"));
