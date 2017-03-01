@@ -32,7 +32,8 @@ var pool = new Pool(config);
 app.get('/articles/:articleName', function (req, res) {
     var articleName = req.params.articleName;
     console.log("Article Name is: " + articleName);
-    pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
+    //pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
+    pool.query("SELECT * FROM article", function (err, result) {
         if (err) {
             console.log("In Error Block - connection issue? " + err.message);
             res.send(err.toString);
