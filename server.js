@@ -32,16 +32,15 @@ var pool = new Pool(config);
 app.get('/articles/:articleName', function (req, res) {
     var articleName = req.params.articleName;
     console.log("Article Name is: " + articleName);
-    //pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
-    pool.query("SELECT * FROM article", function (err, result) {
+    pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
         if (err) {
             console.log("In Error Block - connection issue? Message: " + err.message + " Code: " + err.code);
-            res.send(err.toString);
+            res.status(500).send(err.message);
         }
         else {
             if (result.rows.length === 0) {
                 console.log("Empty 0th row");
-                res.send("Article not found");
+                res.status(400).send("Article not found");
             }
             else {
                 console.log("Creating template");
