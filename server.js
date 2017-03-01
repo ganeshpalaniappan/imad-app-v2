@@ -1,5 +1,3 @@
-"use strict";
-
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
@@ -33,8 +31,7 @@ app.get('/articles/:articleName', function (req, res) {
                 res.status(400).send("Article not found");
             }
             else {
-                let articleData = result.rows[0];
-                res.send(createPageFromTemplate(articleData,"Article-Template.html"));
+                res.send(createPageFromTemplate(result.rows[0],"Article-Template.html"));
             }
         }
     });
