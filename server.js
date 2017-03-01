@@ -35,7 +35,7 @@ app.get('/articles/:articleName', function (req, res) {
     //pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
     pool.query("SELECT * FROM article", function (err, result) {
         if (err) {
-            console.log("In Error Block - connection issue? Message: " + err.message + "Code: " + err.code);
+            console.log("In Error Block - connection issue? Message: " + err.message + " Code: " + err.code);
             res.send(err.toString);
         }
         else {
