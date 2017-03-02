@@ -15,7 +15,7 @@ var Pool = require('pg').Pool;
 var config = {
     user: 'ganeshpalaniappan',
     database: 'ganeshpalaniappan',
-    host: 'localhost',
+    host: 'db.imad.hasura-app.io',
     port: '5432',
     password: 'db-ganeshpalaniappan-46553'
 };
@@ -33,11 +33,11 @@ app.get('/articles/:articleName', function (req, res) {
     var articleName = req.params.articleName;
     pool.query("SELECT * FROM article WHERE title = $1", [articleName], function (err, result) {
         if (err) {
-            res.send(err.toString);
+            res.status(500).send(err.toString);
         }
         else {
             if (result.rows.length === 0) {
-                res.send("Article not found");
+                res.status(400).send("Article not found");
             }
             else {
                 res.send(createPageFromTemplate(result.rows[0],"Article-Template.html"));
