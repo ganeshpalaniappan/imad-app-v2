@@ -2,6 +2,7 @@ var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
+const crypto = require('crypto');
 //var envConfig = require('dotenv').config();
 
 /*var config = {
@@ -26,6 +27,19 @@ app.use(morgan('combined'));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
+});
+
+function hash(secret, salt, iterations) {
+    const hashKey = crypto.pbkdf2Sync(secret, salt, iterations, 512, 'sha512');
+    const pwdStr = ['sha512', 512, iterations, salt, hashKey.toString('hex')].join('$');
+    return pwdStr;
+};
+
+app.get('/hash/:input', function (req, res) {
+    const secret = req.params.input;
+    const salt = crypto.randomBytes(256).toString('hex');
+    const pwdStr = hash(secret, salt, 10000);
+    res.send(pwdStr);
 });
 
 var pool = new Pool(config);
