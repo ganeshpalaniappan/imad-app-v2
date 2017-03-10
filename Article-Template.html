@@ -6,7 +6,7 @@
     <link href="/ui/style.css" rel="stylesheet" />
     <script type="text/javascript" src="/ui/article.js"></script>
 </head>
-<body>
+<body onload="onArticleLoad();">
     <div class="container">
         <a href="/">Home</a>
         
@@ -19,11 +19,12 @@
         
         <hr />
 
-        <div id="CommentInputArea">
+        <div id="CommentInputArea" style="display:none">
             <textarea rows="4" cols="80" id="comment_txt"></textarea>
             <br />
             <input type="button" id="comment_btn" value="Add Comment" onclick="comment_onclick();"/>
             <input type="hidden" id="articleID_hdn" value="${data.article_id}"/>
+            <input type="hidden" id="userid_hdn" value="${sessionUserID}" />
         </div>
 
         <h3>Previously entered comments</h3>

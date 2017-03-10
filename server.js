@@ -5,7 +5,6 @@ var Pool = require('pg').Pool;
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-//var envConfig = require('dotenv').config();
 
 var config = {
     user: 'postgres',
@@ -118,7 +117,8 @@ app.get('/articles/:articleName', function (req, resp) {
                 resp.status(400).send("Article not found");
             }
             else {
-                resp.send(createPageFromTemplate(result.rows[0],"Article-Template.html"));
+                let userid = (req.session && req.session.auth && req.session.auth.userid) ? req.session.auth.userid : "";
+                resp.send(createPageFromTemplate(result.rows[0], "Article-Template.html", userid));
             }
         }
     });
@@ -132,6 +132,23 @@ app.get('/get-articles', function (req, resp) {
         else {
             if (result.rows.length === 0) {
                 resp.status(400).send("Articles not found");
+            }
+            else {
+                resp.send(JSON.stringify(result.rows));
+            }
+        }
+    });
+});
+
+app.get('/get-comments', function (req, resp) {
+    let article_id = req.query.article_id;
+    pool.query("SELECT comment,timestamp FROM comment WHERE article_id = $1 order by timestamp desc", [article_id],function (err, result) {
+        if (err) {
+            resp.status(500).send(err.toString());
+        }
+        else {
+            if (result.rows.length === 0) {
+                resp.status(400).send("Comments not found");
             }
             else {
                 resp.send(JSON.stringify(result.rows));
@@ -158,17 +175,16 @@ app.post('/submit-comment', function (req, resp) {
         });
 });
 
-/*app.get('/:pageName', function (req, res) {
-    var pageName = req.params.pageName;
-    res.send(createPageFromTemplate(pageData[pageName], "server-pageTemplate.html"));
-});*/
-
 app.get('/ui/style.css', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'style.css'));
 });
 
 app.get('/ui/main.js', function (req, res) {
     res.sendFile(path.join(__dirname, 'ui', 'main.js'));
+});
+
+app.get('/ui/article.js', function (req, res) {
+    res.sendFile(path.join(__dirname, 'ui', 'article.js'));
 });
 
 app.get('/ui/madi.png', function (req, res) {
@@ -186,16 +202,7 @@ function hash(secret, salt, iterations) {
     return pwdStr;
 };
 
-/*function content(title, heading, date, text) {
-    this.title = title; this.heading = heading; this.date = date; this.text = text;
-};*/
-
-/*var pageData = {
-    'page1Data': new content("Page 1 Title", "Page 1 Heading", "09-Feb-2017", "Page 1 Content"),
-    'page2Data': new content("Page 2 Title", "Page 2 Heading", "10-Feb-2017", "Page 2 Content")
-};*/
-
-function createPageFromTemplate(data,template) {
+function createPageFromTemplate(data,template,userid) {
     if (!data) {
         return 'This page is not available';
     }
@@ -203,6 +210,8 @@ function createPageFromTemplate(data,template) {
     var pageHtmlTemplate = "";
     var fs = require("fs");
     var templatePath = path.join(__dirname, template);
+
+    var sessionUserID = userid;
 
     try {
         pageHtmlTemplate = fs.readFileSync(templatePath, "utf-8");
