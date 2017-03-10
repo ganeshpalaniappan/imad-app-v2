@@ -19,6 +19,7 @@
     <Content Include="Article-Template.html" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Compile Include="ui\article.js" />
     <Compile Include="server.js" />
     <Content Include="server-pageTemplate.html" />
     <Content Include="ui\index.html" />
@@ -29,10 +30,12 @@
   <ItemGroup>
     <Folder Include="typings\" />
     <Folder Include="typings\globals\" />
+    <Folder Include="typings\globals\express-session\" />
     <Folder Include="typings\globals\node\" />
     <Folder Include="ui" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="typings\globals\express-session\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\node\index.d.ts" />
     <TypeScriptCompile Include="typings\index.d.ts" />
   </ItemGroup>

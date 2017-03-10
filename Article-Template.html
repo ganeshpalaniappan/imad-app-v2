@@ -4,17 +4,34 @@
     <title>${data.title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="/ui/style.css" rel="stylesheet" />
+    <script type="text/javascript" src="/ui/article.js"></script>
 </head>
 <body>
     <div class="container">
-        <div>
-            <a href="/">Home</a>
+        <a href="/">Home</a>
+        
+        <hr />
+        
+        <h3>${data.title}</h3>
+        <p>Category: ${data.category}</p>
+        <div class="date">${data.modified_date.toDateString()}</div>
+        <p>${data.content}</p>
+        
+        <hr />
+
+        <div id="CommentInputArea">
+            <textarea rows="4" cols="80" id="comment_txt"></textarea>
+            <br />
+            <input type="button" id="comment_btn" value="Add Comment" onclick="comment_onclick();"/>
+            <input type="hidden" id="articleID_hdn" value="${data.article_id}"/>
         </div>
-        <hr />
-        <h3>${data.heading}</h3>
-        <div class="date">${data.date.toDateString()}</div>
-        <div><p>${data.content}</p></div>
-        <hr />
+
+        <h3>Previously entered comments</h3>
+
+        <div>
+            <ul id="comments_lst"></ul>
+        </div>
+
     </div>
 
 </body>

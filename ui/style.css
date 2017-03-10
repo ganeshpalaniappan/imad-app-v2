@@ -39,3 +39,7 @@ body {
   border: solid 5px #707070;
   box-shadow: 0 0 10px 1px #969696;
 }
+
+#displayName {
+    font-style: italic;
+}

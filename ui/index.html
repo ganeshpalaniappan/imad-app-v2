@@ -3,15 +3,41 @@
     <head>
         <link href="/ui/style.css" rel="stylesheet" />
     </head>
-    <body>
-        <div class="center">
-            <img id="madi" src="/ui/madi.png" class="img-medium"/>
+    <body onload="listArticles();">
+        <div><h2>About Me!</h2></div>
+        <div><h4>Hi! I'm Ganesh. I work for Thomson Reuters!</h4></div>
+
+        <hr>
+
+        <div><h2>Login/Register to unlock awesome features</h2></div>
+
+        <div id="login-detail">
+            <div>
+                <input type="text" placeholder="Enter User Name" id="username" />
+                <input type="password" id="password" />
+            </div>
+
+            <br />
+
+            <div>
+                <input type="button" value="Login" id="login" />
+                <input type="button" value="Register" id="register" />
+            </div>
         </div>
-        <br>
-        <div class="center text-big bold">
-            Hi! I am your webapp. Hello world!
-            <h2>I made this change manually</h2>
+
+        <div id="User-Detail" style="display:none">
+            <div>Hi <span id="displayName"></span></div>
+            <a href="#" id="logout">Logout</a>
         </div>
+
+        <br />
+        <hr>
+
+        <div>
+            <h2>My Articles</h2>
+            <ul id="articleList"></ul>
+        </div>
+
         <script type="text/javascript" src="/ui/main.js">
         </script>
     </body>
