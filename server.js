@@ -78,7 +78,7 @@ app.post('/login', function (req, resp) {
                 const OrigPwdArr = OrigPwdStr.split('$');
                 const targetHashedPwd = hash(secret, OrigPwdArr[3], Number(OrigPwdArr[2]));
                 if (OrigPwdStr === targetHashedPwd) {
-                    req.session.auth = { userid: result.rows[0].userid };
+                    req.session.auth = { userid: result.rows[0].userid, username: result.rows[0].username };
                     resp.send("Credentials correct!");
                 }
                 else {
@@ -92,10 +92,10 @@ app.post('/login', function (req, resp) {
 
 app.get('/check-session', function (req, resp) {
     if (req.session && req.session.auth && req.session.auth.userid) {
-        resp.send("You are logged in as: " + req.session.auth.userid.toString());
+        resp.send(JSON.stringify(req.session.auth));
     }
     else {
-        resp.send("You are not logged in");
+        resp.send( JSON.stringify({Error: "You are not logged in"}) );
     }
 });
 

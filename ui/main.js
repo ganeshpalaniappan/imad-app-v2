@@ -10,9 +10,7 @@ login.onclick = function () {
 
             if (request.status === 200) {
                 alert("Logged in successfully");
-                document.getElementById("login-detail").style.display = 'none';
-                document.getElementById("User-Detail").style.display = 'block';
-                document.getElementById("displayName").innerHTML = loginJSON.username;
+                setLoggedInEnv(loginJSON.username);
             }
             else if (request.status === 403) {
                 alert("Username/password is incorrect");
@@ -43,8 +41,7 @@ logout.onclick = function () {
         if (request.readyState === XMLHttpRequest.DONE) {
             if (request.status === 200) {
                 alert("Logged out successfully");
-                document.getElementById("login-detail").style.display = 'block';
-                document.getElementById("User-Detail").style.display = 'none';
+                setLoggedOutEnv();
             }
             else if (request.status === 500) {
                 alert("Something went wrong on the server.");
@@ -113,3 +110,40 @@ var listArticles = function () {
     request.send(null);
 };
 
+var onMainLoad = function () {
+    listArticles();
+    checkSessionAndSetEnv();
+};
+
+var checkSessionAndSetEnv = function () {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (request.readyState === XMLHttpRequest.DONE) {
+
+            if (request.status === 200) {
+                const userJSON = JSON.parse(request.responseText);
+                if (userJSON && userJSON.username) {
+                    setLoggedInEnv(userJSON.username);
+                    return;
+                }
+            }
+
+            setLoggedOutEnv();
+        }
+    };
+
+    request.open("GET", "/check-session", true);
+    request.send(null);
+};
+
+var setLoggedInEnv = function (username) {
+    document.getElementById("login-detail").style.display = 'none';
+    document.getElementById("User-Detail").style.display = 'block';
+    document.getElementById("displayName").innerHTML = username;
+};
+
+var setLoggedOutEnv = function () {
+    document.getElementById("login-detail").style.display = 'block';
+    document.getElementById("User-Detail").style.display = 'none';
+};
